@@ -1,0 +1,97 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API User",
+        "description": "Esta API é uma Basica consulta de Read,Create,Update e Delete de um banco de Usuários",
+        "contact": {
+            "email": "lucassantosnacs.21@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/",
+            "description": "API de test"
+        }
+    ],
+    "paths": {
+        "/SignUp": {
+            "post": {
+                "summary": "entrar com email e senha para gerar seu Token",
+                "description": "Essa rota é responsavel por criar um token para permitir as outras requisições",
+                "tags": [
+                    "authorization"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Users"
+                            },
+                            "examples": {
+                                "User": {
+                                    "value": {
+                                        "nome": "exemple123@g.com",
+                                        "email": "senhaExemplo123",
+                                        "senha": "senhaExemplo123",
+                                        "telefones": [{
+                                            "numero": "96451-8654",
+                                            "ddd": "11"
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Menssagem: Não Foi possivel criar este usuário!"
+                    },
+                    "403": {
+                        "description": "E-mail já Existente!"
+                    },
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#components/schemas/Users"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Users": {
+                "type": "object",
+                "properties": {
+                    "nome": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "senha": {
+                        "type": "string"
+                    },
+                    "telefones":{
+                        "type": "array"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

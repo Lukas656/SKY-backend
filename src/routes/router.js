@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-//const swaggerUi = require('swagger-ui-express');
-//const swaggerDocs = require('../swagger.json');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./swagger.json');
 const funcReq = require('../controllers/controllers');
 //const checkToken = require('../controller/mindware');
 const router = express();
@@ -18,8 +18,7 @@ router.get('/', async (req, res) => {
 
 
 // Conecta Com A Documentação Swagger
-//router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
+router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 
@@ -39,7 +38,7 @@ router.post('/SignUp', async (req, res) => {
         let newData = await funcReq.createUser(data);
         
         if (newData == false){
-            return res.status(403).send({ "menssagem": "E-mail invalido" });
+            return res.status(403).send({ "menssagem": "E-mail já Existente!" });
         };
         res.status(200).send(newData)
 
@@ -53,6 +52,11 @@ router.post('/SignUp', async (req, res) => {
 
 });
 
+
+// Sign in
+router.post('/SigIn', async(req, res)=>{
+
+});
 
 
 
