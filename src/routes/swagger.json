@@ -86,7 +86,7 @@
                             "examples": {
                                 "User": {
                                     "value": {
-                                        "email": "senhaExemplo123",
+                                        "email": "emailExemplo123@g.com",
                                         "senha": "senhaExemplo123"
                                     }
                                 }
@@ -180,8 +180,7 @@
                             "examples": {
                                 "User": {
                                     "value": {
-                                        "nome": "exemple nome",
-                                        "email": "emailExemplo123@g.com",
+                                        "nome": "exemple nome",                            
                                         "senha": "senhaExemplo123",
                                         "telefones": [{
                                             "numero": "00000-0000",
@@ -199,9 +198,6 @@
                     },
                     "401": {
                         "description": "Não Autorizado"
-                    },
-                    "403": {
-                        "description": "E-mail já Existente!"
                     },
                     "200": {
                         "description": "ok",

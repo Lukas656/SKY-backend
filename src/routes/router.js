@@ -1,11 +1,12 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./swagger.json');
-const funcReq = require('../controllers/controllers');
-const checkToken = require('../controllers/mindware.js');
+const funcReq = require('../api/funcoes-Req');
+const checkToken = require('../controllers/mindware');
 const router = express();
 router.use(bodyParser.json());
 router.use(cors());
@@ -26,7 +27,7 @@ router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Sign up
 router.post('/SignUp', async (req, res) => {
 	// eslint-disable-next-line no-unused-vars
-	const { nome, email, senha, telefones=[{numero, ddd }], token } = req.body;
+	const { nome, email, senha, telefones=[{numero, ddd }], token} = req.body;
 
 	try {
 		if (!nome) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta o nome)' });
@@ -56,13 +57,14 @@ router.post('/SignUp', async (req, res) => {
 
 // Sign in
 router.post('/SigIn', checkToken, async (req, res) => {
-	const { email, senha } = req.body;
-
+	const { email, senha} = req.body;
 	try {
 		if (!email) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta o email)' });
 		if (!senha) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta a senha)' });
 
 		const data = req.body;
+
+
 		let newData = await funcReq.authenticate(data);
 		if (newData == false) {
 			return res.status(401).send({ 'menssagem': 'Usuário e/ou senha inválidos' });
@@ -105,7 +107,6 @@ router.put('/user/:id', checkToken, async (req, res) => {
 	try {
 
 		if (!newDate.nome) return res.status(400).send({ 'menssagem': 'Não Foi possivel Atualizar este usuário (Ainda falta o nome)' });
-		if (!newDate.email) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o email)' });
 		if (!newDate.senha) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta a senha)' });
 		if (newDate.telefones == false) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o telefone)' });
 		if (newDate.telefones[0].numero == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o NUMERO)' });
@@ -113,9 +114,6 @@ router.put('/user/:id', checkToken, async (req, res) => {
 
 		let user = await funcReq.updateUser(filter, newDate);
 
-		if (user == false) {
-			return res.status(403).send({ 'menssagem': 'E-mail já Existente!, ultilize um novo' });
-		}
 		res.status(200).send({ success: true, user });
 
 
