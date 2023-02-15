@@ -11,34 +11,51 @@ const { ObjectID } = require('mongodb');
 // create
 async function createUser(newUser) {
 	const conectionDb = await conectDB.getConect();
-	const checkEmail = await conectionDb.findOne({ email: newUser.email });
-
-	if (!checkEmail) {
-		// criptografando password
-		const salt = await bcrypt.genSalt(8);
-		const passwordHash = await bcrypt.hash(newUser.senha, salt);
-		newUser.senha = passwordHash;
-
-		const secret = process.env.TOKEN_SECRET;
-		const token = jwt.sign(
-			{
-				nome: newUser.nome,
-				email: newUser.email
-			}, secret, { expiresIn: '30m' });
-
-		newUser.token = token;
-		const hora = new Date().toLocaleTimeString();
-		newUser.data_criacao = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
-		newUser.data_atualizacao = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
-		newUser.ultimo_login = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
-
-
-		await conectionDb.insertOne(newUser);
-
-		return newUser;
+	const obj = {
+		nome: newUser.nome,
+		email: newUser.email,
+		senha: newUser.senha,
+		telefones:[{
+			numero: newUser.telefones[0].numero,
+			ddd: newUser.telefones[0].ddd}],
+		token: String
+	}; 
+		
+	const checkEmail = await conectionDb.findOne({ email: obj.email });
+	if(checkEmail=== true){
+		return false;
 	}
 
-	return false;
+
+	return obj;
+	
+
+	// if (!checkEmail) {
+	// 	// criptografando password
+	// 	const salt = await bcrypt.genSalt(8);
+	// 	const passwordHash = await bcrypt.hash(newUser.senha, salt);
+	// 	newUser.senha = passwordHash;
+
+	// 	const secret = process.env.TOKEN_SECRET;
+	// 	const token = jwt.sign(
+	// 		{
+	// 			nome: newUser.nome,
+	// 			email: newUser.email
+	// 		}, secret, { expiresIn: '30m' });
+
+	// 	newUser.token = token;
+	// 	const hora = new Date().toLocaleTimeString();
+	// 	newUser.data_criacao = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
+	// 	newUser.data_atualizacao = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
+	// 	newUser.ultimo_login = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
+
+
+	// 	await conectionDb.insertOne(newUser);
+
+	// 	return newUser;
+	// }
+
+	// return false;
 }
 
 // authenticate
@@ -93,7 +110,6 @@ async function deleteUser(filter) {
 	let menssagem = `O Usuario ${myquere.nome} foi deletado com sucesso!!`;
 	let resp = conectionDb.deleteOne(myquere);
 	return menssagem;
-
 }
 
 
@@ -103,7 +119,6 @@ const funcReq = {
 	getUser,
 	updateUser,
 	deleteUser
-
 };
 
 module.exports = funcReq;

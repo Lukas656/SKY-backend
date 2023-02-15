@@ -26,7 +26,7 @@ router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Sign up
 router.post('/SignUp', async (req, res) => {
 	// eslint-disable-next-line no-unused-vars
-	const { nome, email, senha, telefones = [{numero, ddd }], token } = req.body;
+	const { nome, email, senha, telefones=[{numero, ddd }], token } = req.body;
 
 	try {
 		if (!nome) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta o nome)' });
