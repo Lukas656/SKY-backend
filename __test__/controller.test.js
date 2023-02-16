@@ -1,11 +1,11 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-undef */
-const conectDB = require('../api/database');
-const funcs = require('../api/funcoes-Req');
-const bcrypt = require('bcrypt');
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const moment = require('moment');
+const conectDB = require('../src/database/database');
+const funcs = require('../src/controllers/controller');
+const services = require('../src/controllers/service');
+
+
 const { ObjectID } = require('mongodb');
 
 
@@ -31,15 +31,15 @@ describe('Create Sign Up', ()=>{
 	});
 	it('deveria criptografar a senha deste objeto', async ()=>{
 		// criptografando password
-	 	const salt = await bcrypt.genSalt(8);
-	 	const passwordHash = await bcrypt.hash(obj.senha, salt);
+	 	const salt = await services.bcrypt.genSalt(8);
+	 	const passwordHash = await services.bcrypt.hash(obj.senha, salt);
 	 	obj.senha = passwordHash;
 
 		expect(obj.senha).toBe(passwordHash);
 	});
 	it('deveria gerar um token', ()=>{
 		const secret = process.env.TOKEN_SECRET;
-		const token = jwt.sign(
+		const token = services.jwt.sign(
 			{
 				nome: obj.nome,
 				email: obj.email
@@ -52,7 +52,7 @@ describe('Create Sign Up', ()=>{
 
 	it('deveria adicionar data e hora da criação', async ()=>{
 		const hora = new Date().toLocaleTimeString();
-		criateData = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
+		criateData = services.moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
 		obj.data_criacao = criateData;
 
 

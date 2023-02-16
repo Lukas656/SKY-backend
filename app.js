@@ -1,6 +1,6 @@
 const express = require('express');
 const routers = require('./src/routes/router');
-const port = 8000;
+const port = 5000;
 
 const app = express();
 app.use(routers);

@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocs = require('./swagger.json');
-const funcReq = require('../api/funcoes-Req');
-const checkToken = require('../controllers/mindware');
+const swagger = require('../../swagger');
+const controller = require('../controllers/controller');
+const checkToken = require('../helpers/validation');
+const bodyParser = require('body-parser');
 const router = express();
 router.use(bodyParser.json());
 router.use(cors());
@@ -20,7 +19,7 @@ router.get('/', async (req, res) => {
 
 
 // Conecta Com A Documentação Swagger
-router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+router.use('/docs', swagger.swaggerUi.serve, swagger.swaggerUi.setup(swagger.swaggerDocs));
 
 
 
@@ -38,7 +37,7 @@ router.post('/SignUp', async (req, res) => {
 		if (telefones[0].ddd == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta o DDD)' });
 
 		const data = req.body;
-		let newData = await funcReq.createUser(data);
+		let newData = await controller.createUser(data);
 
 		if (newData == false) {
 			return res.status(403).send({ 'menssagem': 'E-mail já Existente!' });
@@ -65,7 +64,7 @@ router.post('/SigIn', checkToken, async (req, res) => {
 		const data = req.body;
 
 
-		let newData = await funcReq.authenticate(data);
+		let newData = await controller.authenticate(data);
 		if (newData == false) {
 			return res.status(401).send({ 'menssagem': 'Usuário e/ou senha inválidos' });
 		}
@@ -88,7 +87,7 @@ router.get('/user/:id', checkToken, async (req, res) => {
 		if (!user) return res.status(400).send({ 'menssagem': 'Não encontrado (Ainda falta o digitar o id)' });
 
 		const data = req.params.id;
-		let userID = await funcReq.getUser(data);
+		let userID = await controller.getUser(data);
 
 		res.status(200).send(userID);
 
@@ -112,7 +111,7 @@ router.put('/user/:id', checkToken, async (req, res) => {
 		if (newDate.telefones[0].numero == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o NUMERO)' });
 		if (newDate.telefones[0].ddd == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o DDD)' });
 
-		let user = await funcReq.updateUser(filter, newDate);
+		let user = await controller.updateUser(filter, newDate);
 
 		res.status(200).send({ success: true, user });
 
@@ -131,7 +130,7 @@ router.delete('/user/:id', checkToken, async (req, res) => {
 
 		if (!filter) return res.status(400).send({ 'menssagem': 'Não Foi possivel deletar este usuário (Ainda falta o digitar o ID)' });
 
-		let user = await funcReq.deleteUser(filter);
+		let user = await controller.deleteUser(filter);
 
 		if (user == false) {
 			return res.status(403).send({ 'menssagem': 'ID não existente!' });
