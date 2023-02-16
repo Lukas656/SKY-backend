@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/Lukas656/SKY-backend/issues"
   },
-  "homepage": "https://github.com/Lukas656/SKY-backendtest-backend#readme",
+  "homepage": "https://github.com/Lukas656/SKY-backend#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
