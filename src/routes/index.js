@@ -32,3 +32,24 @@ router.delete('/user/:id', checkToken, userControll.deleteUser);
 
 
 module.exports = router;
+
+
+
+
+
+// trocar validation  para autorizate
+// deixar os nomes em ingles das pastas, arquivos e funçoes
+// como implementar npm joi schema validation
+
+// metodo conect(contxto,filter) 
+// return db.collenction
+
+// recebo os find , update e delete no banco e retono para o controllers 
+
+// o que é um servidor ??
+// diferença de XML JSON
+// estudar cpu memoria tipo 
+// DNS publica 
+
+
+//
