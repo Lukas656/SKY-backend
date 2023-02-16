@@ -27,14 +27,11 @@ async function create(req, res) {
 	}
 }
 async function logar(req, res) {
-	const { email, senha } = req.body;
 	try {
-		if (!email) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta o email)' });
-		if (!senha) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta a senha)' });
+		if (!req.body.email) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta o email)' });
+		if (!req.body.senha) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta a senha)' });
 
 		const data = req.body;
-
-
 		let newData = await userModels.autenticacao(data);
 		if (newData == false) {
 			return res.status(401).send({ 'menssagem': 'Usuário e/ou senha inválidos' });

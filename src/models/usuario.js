@@ -34,7 +34,6 @@ async function criarUsuario(newUser) {
 		newUser.data_criacao = criateData;
 
 		await conectionDb.insertOne(newUser);
-		console.log(newUser);
 		return newUser;
 	}
 	return false;
@@ -47,7 +46,6 @@ async function autenticacao(validaUser) {
 	const checkEmail = await conectionDb.findOne({ email: validaUser.email });
 	if (!checkEmail) {
 		return false;
-
 	}
 	const checkPass = await bcrypt.compare(validaUser.senha, checkEmail.senha);
 	if (!checkPass) {
