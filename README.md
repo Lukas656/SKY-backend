@@ -8,9 +8,12 @@ Criar um aplicativo backend que irá expor uma API RESTful de criação de sing 
 
 - [@Lucas Santos](https://github.com/Lukas656)
 
+## 🛠 Habilidades
+node.js, mongoDB, Bcrypt, Express, JWT, Jest 
 
-## Demonstração
-![tinywow_api-SKY_14058986](https://user-images.githubusercontent.com/72577273/219472162-9b857f06-f821-4673-a839-e5b9296f6dfb.gif)
+## Screenshots
+![2023-02-15 (7)](https://user-images.githubusercontent.com/72577273/219472066-a4d6686d-14a1-4b09-ad4c-2ac026ac0969.png)
+
 
 ## Documentação
 [Documentação](https://link-da-documentação)
@@ -32,10 +35,5 @@ Para rodar os testes, rode o seguinte comando
   ou
   npm run test
 ```
-## Screenshots
-![2023-02-15 (7)](https://user-images.githubusercontent.com/72577273/219472066-a4d6686d-14a1-4b09-ad4c-2ac026ac0969.png)
-
-
-## 🛠 Habilidades
-node.js, mongoDB, Bcrypt, Express, JWT, Jest 
-
+## Demonstração
+![tinywow_api-SKY_14058986](https://user-images.githubusercontent.com/72577273/219472162-9b857f06-f821-4673-a839-e5b9296f6dfb.gif)
