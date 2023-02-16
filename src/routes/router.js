@@ -42,6 +42,7 @@ router.post('/SignUp', async (req, res) => {
 		if (newData == false) {
 			return res.status(403).send({ 'menssagem': 'E-mail já Existente!' });
 		}
+		res.setHeader('Access-Control-Allow-Origin', '*');
 		res.status(200).send(newData);
 
 
