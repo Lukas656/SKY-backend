@@ -1,5 +1,5 @@
 /* eslint-disable linebreak-style */
-const userModels = require('../models/usuario');
+const userModels = require('../models/user');
 
 async function create(req, res) {
 	try {
@@ -10,7 +10,7 @@ async function create(req, res) {
 		if (req.body.telefones[0].ddd == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta o DDD)' });
 
 		const data = req.body;
-		let newData = await userModels.criarUsuario(data);
+		let newData = await userModels.crieteUser(data);
 
 		if (newData == false) {
 			return res.status(403).send({ 'menssagem': 'E-mail já Existente!' });
@@ -26,13 +26,13 @@ async function create(req, res) {
 		});
 	}
 }
-async function logar(req, res) {
+async function authentic(req, res) {
 	try {
 		if (!req.body.email) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta o email)' });
 		if (!req.body.senha) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta a senha)' });
 
 		const data = req.body;
-		let newData = await userModels.autenticacao(data);
+		let newData = await userModels.Authentication(data);
 		if (newData == false) {
 			return res.status(401).send({ 'menssagem': 'Usuário e/ou senha inválidos' });
 		}
@@ -53,7 +53,7 @@ async function readUser(req, res) {
 		if (!user) return res.status(400).send({ 'menssagem': 'Não encontrado (Ainda falta o digitar o id)' });
 
 		const data = req.params.id;
-		let userID = await userModels.userID(data);
+		let userID = await userModels.userById(data);
 
 		res.status(200).send(userID);
 
@@ -75,7 +75,7 @@ async function updateUser(req, res) {
 		if (newDate.telefones[0].numero == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o NUMERO)' });
 		if (newDate.telefones[0].ddd == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o DDD)' });
 
-		let user = await userModels.atualiza(filter, newDate);
+		let user = await userModels.updateById(filter, newDate);
 
 		res.status(200).send({ success: true, user });
 
@@ -92,7 +92,7 @@ async function deleteUser(req, res) {
 	try {
 
 		if (!filter) return res.status(400).send({ 'menssagem': 'Não Foi possivel deletar este usuário (Ainda falta o digitar o ID)' });
-		let user = await userModels.deleta(filter);
+		let user = await userModels.deleteById(filter);
 		if (user == false) {
 			return res.status(403).send({ 'menssagem': 'ID não existente!' });
 		}
@@ -107,4 +107,4 @@ async function deleteUser(req, res) {
 	}
 }
 
-module.exports = { create, logar, readUser, updateUser, deleteUser };
+module.exports = { create, authentic, readUser, updateUser, deleteUser };

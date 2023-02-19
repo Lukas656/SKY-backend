@@ -5,7 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const swagger = require('../../swagger');
 const userControll = require('../controllers/usersController');
-const checkToken = require('../helpers/validation');
+const checkToken = require('../helpers/Authorization');
 const bodyParser = require('body-parser');
 
 const router = express();
@@ -22,7 +22,7 @@ router.use('/docs', swagger.swaggerUi.serve, swagger.swaggerUi.setup(swagger.swa
 // // Sign up
 router.post('/SignUp', userControll.create);
 // Sign in
-router.post('/SigIn', checkToken, userControll.logar);
+router.post('/SigIn', checkToken, userControll.authentic);
 // Find a user
 router.get('/user/:id', checkToken, userControll.readUser);
 // update user
@@ -32,24 +32,3 @@ router.delete('/user/:id', checkToken, userControll.deleteUser);
 
 
 module.exports = router;
-
-
-
-
-
-// trocar validation  para autorizate
-// deixar os nomes em ingles das pastas, arquivos e funçoes
-// como implementar npm joi schema validation
-
-// metodo conect(contxto,filter) 
-// return db.collenction
-
-// recebo os find , update e delete no banco e retono para o controllers 
-
-// o que é um servidor ??
-// diferença de XML JSON
-// estudar cpu memoria tipo 
-// DNS publica 
-
-
-//

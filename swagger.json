@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "http://ec2-52-207-238-116.compute-1.amazonaws.com:5000/",
+            "url": "ec2-3-238-20-251.compute-1.amazonaws.com:5000/",
             "description": "API de test"
         }
     ],

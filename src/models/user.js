@@ -10,7 +10,7 @@ const { ObjectID } = require('mongodb');
 
 
 // create
-async function criarUsuario(newUser) {
+async function crieteUser(newUser) {
 	const conectionDb = await conectDB.conect();
 	const checkEmail = await conectionDb.findOne({ email: newUser.email });
 	if (!checkEmail) {
@@ -40,7 +40,7 @@ async function criarUsuario(newUser) {
 }
 
 // authenticate
-async function autenticacao(validaUser) {
+async function Authentication(validaUser) {
 	const conectionDb = await conectDB.conect();
 
 	const checkEmail = await conectionDb.findOne({ email: validaUser.email });
@@ -66,7 +66,7 @@ async function autenticacao(validaUser) {
 }
 
 // read from ID
-async function userID(id) {
+async function userById(id) {
 	const conectionDb = await conectDB.conect();
 
 	const user = await conectionDb.findOne({ _id: ObjectID(id) });
@@ -75,7 +75,7 @@ async function userID(id) {
 	return user;
 }
 // update from ID
-async function atualiza(filter, newDate) {
+async function updateById(filter, newDate) {
 	const conectionDb = await conectDB.conect();
 
 	let myquere = { _id: ObjectID(filter) };
@@ -93,7 +93,7 @@ async function atualiza(filter, newDate) {
 	return newValues;
 }
 // update from ID
-async function deleta(filter) {
+async function deleteById(filter) {
 	const conectionDb = await conectDB.conect();
 
 	let myquere = await conectionDb.findOne({ _id: ObjectID(filter) });
@@ -103,11 +103,11 @@ async function deleta(filter) {
 }
 
 const usuarioController = {
-	criarUsuario,
-	autenticacao,
-	userID,
-	atualiza,
-	deleta
+	crieteUser,
+	Authentication,
+	userById,
+	updateById,
+	deleteById
 };
 
 module.exports = usuarioController;
