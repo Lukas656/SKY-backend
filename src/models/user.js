@@ -2,7 +2,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
 require('dotenv').config();
-const conectDB = require('../database');
+const conectDB = require('../database/index');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');

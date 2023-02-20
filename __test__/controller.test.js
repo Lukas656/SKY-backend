@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 require('dotenv').config();
 const conectDB = require('../src/database/index');
-const funcs = require('../src/models/usuario');
+const funcs = require('../src/models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
@@ -17,7 +17,7 @@ describe('Create Sign Up', ()=>{
 		const checkEmail = await conectionDb.findOne({ email: obj.email });
 		
 	   if(!checkEmail){
-		   const retorno = await funcs.criarUsuario(obj);
+		   const retorno = await funcs.crieteUser(obj);
 
 		   expect(retorno.nome).toBe(obj.nome);
 		   expect(retorno.email).toBe(obj.email);
@@ -65,7 +65,7 @@ describe('authenticate Sign Un',()=>{
 	const obj = {email: 'lucas2023@gmail.com', senha: 'lucas123'};
 
 	it('Receber um obj com  email e senha validar', async ()=>{
-		const retorno =  await funcs.autenticacao(obj);
+		const retorno =  await funcs.Authentication(obj);
 		if(retorno == false){
 			expect(retorno).toBe(false);
 		}
@@ -79,7 +79,7 @@ describe('authenticate Sign Un',()=>{
 describe('Read User From ID',()=>{
 	const id = '63ed0e87c0c3511707d76f6b';
 	it('Receber um id e verifica se ele está no banco de dados', async ()=>{
-		const retorno =  await funcs.userID(id);
+		const retorno =  await funcs.userById(id);
 
 		if(retorno == false){
 			expect(retorno).toBe(false);
@@ -96,7 +96,7 @@ describe('update User From ID',()=>{
 	const obj = {nome: 'Lucas Santos', senha: 'lucas123', telefones:[{numero: '56784-5321', ddd: '12'}]};
 	it('Receber um id e verifica se ele está no banco de dados para ser atualizado', async ()=>{
 	
-		const retorno = await funcs.atualiza(filter, obj);
+		const retorno = await funcs.updateById(filter, obj);
 
 		if(!retorno){
 			expect(retorno).toBe(false);
@@ -111,7 +111,7 @@ describe('delete User From ID',()=>{
 	it('deve retornar uma menssagem de usuario apagado!', async ()=>{
 		const conectionDb = await conectDB.conect();
 		let myquere = await conectionDb.findOne({ _id: ObjectID(id) });
-		const retorno =  await funcs.deleta(id);
+		const retorno =  await funcs.deleteById(id);
 
 		expect(retorno).toBe(`O Usuario ${myquere.nome} foi deletado com sucesso!!`);		
 	});

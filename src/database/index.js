@@ -16,9 +16,14 @@ async function conect() {
 }
 // colocar um close pra fechar a conecção
 
+
+
 const  conectaBD= {
 	conect,
 
 };
+
+
+
 
 module.exports = conectaBD;
