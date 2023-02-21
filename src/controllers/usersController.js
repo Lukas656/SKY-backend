@@ -1,5 +1,9 @@
 /* eslint-disable linebreak-style */
+require('dotenv').config();
 const userModels = require('../models/user');
+const getFind = require('../repository/index');
+const { ObjectID } = require('mongodb');
+const COLLETION_USUARIO = process.env.COLLETION_USUARIO;
 
 async function create(req, res) {
 	try {
@@ -53,9 +57,9 @@ async function readUser(req, res) {
 		if (!user) return res.status(400).send({ 'menssagem': 'Não encontrado (Ainda falta o digitar o id)' });
 
 		const data = req.params.id;
-		let userID = await userModels.userById(data);
+		const result = await getFind.findByFilter(COLLETION_USUARIO, {_id: ObjectID(data)})
 
-		res.status(200).send(userID);
+		res.status(200).send(result);
 
 	} catch (error) {
 		res.status(500).send({

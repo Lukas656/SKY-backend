@@ -34,20 +34,25 @@ async function insertOne(collectionName, data) {
 	}
 	return db.collection(collectionName).insertOne(data);
 }
-async function updateOne(collectionName, data) {
+
+async function updateOne(collectionName, filter, data) {
 	if (!isConnected()) {
 		await connect();
 	}
-	return db.collection(collectionName).updateOne(data);
+	return db.collection(collectionName).updateOne( filter , data);
 }
 
-
-
-
+async function deleteOne(collectionName, filter) {
+	if (!isConnected()) {
+		await connect();
+	}
+	return db.collection(collectionName).deleteOne(filter);
+}
 
 
 module.exports = {
 	findByFilter,
 	insertOne,
-	updateOne
+	updateOne,
+	deleteOne
 };

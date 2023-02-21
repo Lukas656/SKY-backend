@@ -15,7 +15,7 @@ function getDate(){
 	const hora = new Date().toLocaleTimeString();
 	return moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
 }
-const getToken=(newUser)=>{
+const createTokenJWT=(newUser)=>{
 	const secret = process.env.TOKEN_SECRET;
 	const token = jwt.sign(
 		{
@@ -36,7 +36,7 @@ async function createUser(newUser) {
 		const passwordHash = await bcrypt.hash(newUser.senha, salt);
 		newUser.senha = passwordHash;
 
-		newUser.token = getToken(result);
+		newUser.token = createTokenJWT(newUser);
 		newUser.data_criacao = getDate();
 
 		await repository.insertOne(COLLETION_USUARIO,newUser);
@@ -47,46 +47,47 @@ async function createUser(newUser) {
 
 // authenticate
 async function Authentication(validaUser) {
-	const result = await repository.findByFilter(COLLETION_USUARIO,{ email: validaUser.email });
+	let result = await repository.findByFilter(COLLETION_USUARIO,{ email: validaUser.email });
 	if (!result) {
 		return false;
 	}
 	const checkPass = await bcrypt.compare(validaUser.senha, result.senha);
-	if (!checkPass) {
+	if (!checkPass) { 
 		return false;
 	}
 
+	const newToken = createTokenJWT(result);
+	const date = getDate();
+	await repository.updateOne(COLLETION_USUARIO, {_id: ObjectID(result._id)}, { $set: { token: newToken, ultimo_login: date } });
+	result.token = newToken;
+	result.ultimo_login = date;
 
-
-	await repository.updateOne(result, { $set: { ultimo_login: getDate() } });
 	return result;
 
 }
 
 
 // update from ID
-async function updateById(filter, newData) {
+async function updateById(id, newData) {
+	// adicionar a hora do login 
+	const ultima_atualizacao = getDate();	
+	result = await repository.updateOne(COLLETION_USUARIO, {_id: ObjectID(id)},  { $set: { nome: newData.nome, senha: newData.senha, telefones: [{ numero: newData.telefones[0].numero, ddd: newData.telefones[0].ddd }], data_atualizacao: ultima_atualizacao } });
+	
+	newData.data_atualizacao = ultima_atualizacao;
 
-	let myquery = { _id: ObjectID(filter) };
 	// criptografando a nova senha
 	const salt = await bcrypt.genSalt(8);
 	const passwordHash = await bcrypt.hash(newData.senha, salt);
 	newData.senha = passwordHash;
-	// adicionar a hora do login 
-	const hora = new Date().toLocaleTimeString();
-	const ultima_atualizacao = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
-
-	let newValues = { $set: { nome: newData.nome, senha: newData.senha, telefones: [{ numero: newData.telefones[0].numero, ddd: newData.telefones[0].ddd }], data_atualizacao: ultima_atualizacao } };
-	let resp = await repository.updateOne(myquery, newValues);
-
-	return newValues;
+	
+	return newData;
 }
-// update from ID
-async function deleteById(filter) {
 
-	let myquere = await repository.findOne({ _id: ObjectID(filter) });
-	let menssagem = `O Usuario ${myquere.nome} foi deletado com sucesso!!`;
-	let result = repository.deleteOne(myquere);
+// delete from ID
+async function deleteById(id) {
+	result = await repository.deleteOne(COLLETION_USUARIO, {_id: ObjectID(id)});
+	let menssagem = `O Usuario foi deletado com sucesso!!`;
+
 	return menssagem;
 }
 

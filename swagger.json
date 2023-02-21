@@ -72,11 +72,6 @@
                 "tags": [
                     "authorization"
                 ],
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {

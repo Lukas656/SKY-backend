@@ -1,0 +1,63 @@
+require('dotenv').config();
+const { MongoClient } = require('mongodb');
+
+let state = null;
+// Credenciais 
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+
+// funçao que conecta no Banco de dados Mongobd 
+async function conect() {
+	const uri = `mongodb+srv://${dbUser}:${dbPassword}@cluster0.pryykts.mongodb.net/test`;
+	//const client = new MongoClient()
+	
+	//await client.close();
+	await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+	.then((result) => {
+		return console.log('Database connection successful')
+		state = client.db(process.env.DB_NAME)
+	  })
+	  .catch(err => {
+		return console.error('Database connection error')
+	  })
+	
+	//const db = user.db('User');
+	//return db.collection('test-backend');
+}
+
+
+const  conectaBD= {
+	conect,
+
+};
+
+async function isConnected() {
+    return state.db && state.db.serverConfig && state.db.serverConfig.isConnected();
+}
+
+async function findById(collectionName, id) {
+	if (!this.isConnected()) {
+		await conect()
+	}
+	return state.db.collectionName(collectionName).findOne({ _id: ObjectID(id) });
+}
+
+async function findByEmail(collectionName, email) {
+	if (isConnected()) {
+		await conect()
+	}
+	return state.db.collectionName(collectionName).findOne({ email: email });
+}
+
+
+
+
+module.exports = {
+	findById,
+	findByEmail
+}
+
+
+
+MONGO_URI=mongodb+srv://Lucas:lucas2018@cluster0.pryykts.mongodb.net/test
+DB_NAME=User
