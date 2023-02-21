@@ -2,38 +2,44 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
 require('dotenv').config();
-const conectDB = require('../database/index');
+const repository = require('../repository/index');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const { ObjectID } = require('mongodb');
+const COLLETION_USUARIO = process.env.COLLETION_USUARIO;
+
+
+function getDate(){
+	// adicionar a hora do Ultimo login 
+	const hora = new Date().toLocaleTimeString();
+	return moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
+}
+const getToken=(newUser)=>{
+	const secret = process.env.TOKEN_SECRET;
+	const token = jwt.sign(
+		{
+			nome: newUser.nome,
+			email: newUser.email
+		}, secret, { expiresIn: '30m' });
+
+	return  token;
+};
 
 
 // create
-async function crieteUser(newUser) {
-	const conectionDb = await conectDB.conect();
-	const checkEmail = await conectionDb.findOne({ email: newUser.email });
-	if (!checkEmail) {
+async function createUser(newUser) {
+	const result = await repository.findByFilter(COLLETION_USUARIO,{ email: newUser.email });
+	if (!result) {
 		// criptografando password
 		const salt = await bcrypt.genSalt(8);
 		const passwordHash = await bcrypt.hash(newUser.senha, salt);
 		newUser.senha = passwordHash;
 
-		const secret = process.env.TOKEN_SECRET;
-		const token = jwt.sign(
-			{
-				nome: newUser.nome,
-				email: newUser.email
-			}, secret, { expiresIn: '30m' });
+		newUser.token = getToken(result);
+		newUser.data_criacao = getDate();
 
-
-		newUser.token = token;
-
-		const hora = new Date().toLocaleTimeString();
-		const criateData = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
-		newUser.data_criacao = criateData;
-
-		await conectionDb.insertOne(newUser);
+		await repository.insertOne(COLLETION_USUARIO,newUser);
 		return newUser;
 	}
 	return false;
@@ -41,71 +47,52 @@ async function crieteUser(newUser) {
 
 // authenticate
 async function Authentication(validaUser) {
-	const conectionDb = await conectDB.conect();
-
-	const checkEmail = await conectionDb.findOne({ email: validaUser.email });
-	if (!checkEmail) {
+	const result = await repository.findByFilter(COLLETION_USUARIO,{ email: validaUser.email });
+	if (!result) {
 		return false;
 	}
-	const checkPass = await bcrypt.compare(validaUser.senha, checkEmail.senha);
+	const checkPass = await bcrypt.compare(validaUser.senha, result.senha);
 	if (!checkPass) {
 		return false;
 	}
 
-	// adicionar a hora do Ultimo login 
-	const hora = new Date().toLocaleTimeString();
-	const newData = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
 
-	const ultimo_login = checkEmail.ultimo_login;
 
-	let newValues = { $set: { ultimo_login: newData } };
-	let resp = await conectionDb.updateOne(checkEmail, newValues);
-
-	return checkEmail;
+	await repository.updateOne(result, { $set: { ultimo_login: getDate() } });
+	return result;
 
 }
 
-// read from ID
-async function userById(id) {
-	const conectionDb = await conectDB.conect();
 
-	const user = await conectionDb.findOne({ _id: ObjectID(id) });
-
-
-	return user;
-}
 // update from ID
-async function updateById(filter, newDate) {
-	const conectionDb = await conectDB.conect();
+async function updateById(filter, newData) {
 
-	let myquere = { _id: ObjectID(filter) };
+	let myquery = { _id: ObjectID(filter) };
 	// criptografando a nova senha
 	const salt = await bcrypt.genSalt(8);
-	const passwordHash = await bcrypt.hash(newDate.senha, salt);
-	newDate.senha = passwordHash;
+	const passwordHash = await bcrypt.hash(newData.senha, salt);
+	newData.senha = passwordHash;
 	// adicionar a hora do login 
 	const hora = new Date().toLocaleTimeString();
 	const ultima_atualizacao = moment().startOf('day').format(`DD/MM/YYYY , ${hora}`);
 
-	let newValues = { $set: { nome: newDate.nome, senha: newDate.senha, telefones: [{ numero: newDate.telefones[0].numero, ddd: newDate.telefones[0].ddd }], data_atualizacao: ultima_atualizacao } };
-	let resp = await conectionDb.updateOne(myquere, newValues);
+	let newValues = { $set: { nome: newData.nome, senha: newData.senha, telefones: [{ numero: newData.telefones[0].numero, ddd: newData.telefones[0].ddd }], data_atualizacao: ultima_atualizacao } };
+	let resp = await repository.updateOne(myquery, newValues);
 
 	return newValues;
 }
 // update from ID
 async function deleteById(filter) {
-	const conectionDb = await conectDB.conect();
 
-	let myquere = await conectionDb.findOne({ _id: ObjectID(filter) });
+	let myquere = await repository.findOne({ _id: ObjectID(filter) });
 	let menssagem = `O Usuario ${myquere.nome} foi deletado com sucesso!!`;
-	let resp = conectionDb.deleteOne(myquere);
+	let result = repository.deleteOne(myquere);
 	return menssagem;
 }
 
 const usuarioController = {
-	crieteUser,
+	createUser,
 	Authentication,
-	userById,
 	updateById,
 	deleteById
 };

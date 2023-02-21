@@ -10,7 +10,7 @@ async function create(req, res) {
 		if (req.body.telefones[0].ddd == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta o DDD)' });
 
 		const data = req.body;
-		let newData = await userModels.crieteUser(data);
+		let newData = await userModels.createUser(data);
 
 		if (newData == false) {
 			return res.status(403).send({ 'menssagem': 'E-mail já Existente!' });

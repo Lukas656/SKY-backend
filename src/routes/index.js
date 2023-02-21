@@ -22,7 +22,7 @@ router.use('/docs', swagger.swaggerUi.serve, swagger.swaggerUi.setup(swagger.swa
 // // Sign up
 router.post('/SignUp', userControll.create);
 // Sign in
-router.post('/SigIn', checkToken, userControll.authentic);
+router.post('/SigIn',  userControll.authentic);
 // Find a user
 router.get('/user/:id', checkToken, userControll.readUser);
 // update user
