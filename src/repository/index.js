@@ -1,5 +1,3 @@
-/* eslint-disable no-dupe-keys */
-/* eslint-disable no-unused-vars */
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 
@@ -17,9 +15,6 @@ async function connect() {
 const isConnected = () => {
 	return !!client && !!client.topology && client.topology.isConnected();
 };
-
-
-
 
 async function findByFilter(collectionName, filter) {
 	if (!isConnected()) {

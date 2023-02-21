@@ -1,114 +1,99 @@
-/* eslint-disable linebreak-style */
 require('dotenv').config();
 const userModels = require('../models/user');
-const getFind = require('../repository/index');
-const { ObjectID } = require('mongodb');
-const COLLETION_USUARIO = process.env.COLLETION_USUARIO;
+const jwt = require('jsonwebtoken');
 
-async function create(req, res) {
+async function createUser(req, resp) {
 	try {
-		if (!req.body.nome) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta o nome)' });
-		if (!req.body.email) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta o email)' });
-		if (!req.body.senha) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta a senha)' });
-		if (req.body.telefones[0].numero == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta o NUMERO)' });
-		if (req.body.telefones[0].ddd == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel criar este usuário (Ainda falta o DDD)' });
-
 		const data = req.body;
-		let newData = await userModels.createUser(data);
+		let newData = await userModels.create(data);
 
 		if (newData == false) {
-			return res.status(403).send({ 'menssagem': 'E-mail já Existente!' });
+			return resp.status(403).send({ 'menssagem': 'E-mail já Existente!' });
 		}
 		
-		res.status(200).send(newData);
+		resp.status(200).send(newData);
 
 
 	} catch (error) {
-		res.status(500).send({
+		resp.status(500).send({
 			error: 'Error',
 			message: error.message
 		});
 	}
 }
-async function authentic(req, res) {
-	try {
-		if (!req.body.email) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta o email)' });
-		if (!req.body.senha) return res.status(400).send({ 'menssagem': 'Não Foi possivel logar (Ainda falta a senha)' });
 
+async function authentication(req, resp) {
+	try {
 		const data = req.body;
-		let newData = await userModels.Authentication(data);
+		let newData = await userModels.authentication(data);
 		if (newData == false) {
-			return res.status(401).send({ 'menssagem': 'Usuário e/ou senha inválidos' });
+			return resp.status(401).send({ 'menssagem': 'Usuário e/ou senha inválidos' });
 		}
-		res.status(200).send(newData);
+		resp.status(200).send(newData);
 
 
 	} catch (error) {
-		res.status(500).send({
+		resp.status(500).send({
 			error: 'Error',
 			message: error.message
 		});
 	}
 }
 
-async function readUser(req, res) {
-	const user = req.params.id;
+async function getUserById(req, resp) {
 	try {
-		if (!user) return res.status(400).send({ 'menssagem': 'Não encontrado (Ainda falta o digitar o id)' });
-
-		const data = req.params.id;
-		const result = await getFind.findByFilter(COLLETION_USUARIO, {_id: ObjectID(data)})
-
-		res.status(200).send(result);
+		const data = getTokenAuthorization(req);
+		if (data.id === req.params.id) {
+			const result = await userModels.getUserById(data.id)
+			resp.status(200).send(result);	
+		}
+		else {
+			resp.status(401).send({ mensagem: "Não autorizado"});
+		}
 
 	} catch (error) {
-		res.status(500).send({
+		resp.status(500).send({
 			error: 'Error',
 			message: error.message
 		});
 	}
 }
-async function updateUser(req, res) {
-	let filter = req.params.id;
+async function updateUser(req, resp) {
 	let newDate = req.body;
 	try {
+		const data = getTokenAuthorization(req);
+		await userModels.updateById(data.id, newDate);
 
-		if (!newDate.nome) return res.status(400).send({ 'menssagem': 'Não Foi possivel Atualizar este usuário (Ainda falta o nome)' });
-		if (!newDate.senha) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta a senha)' });
-		if (newDate.telefones == false) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o telefone)' });
-		if (newDate.telefones[0].numero == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o NUMERO)' });
-		if (newDate.telefones[0].ddd == undefined) return res.status(400).send({ 'menssagem': 'Não Foi possivel atualizar este usuário (Ainda falta o DDD)' });
-
-		let user = await userModels.updateById(filter, newDate);
-
-		res.status(200).send({ success: true, user });
-
+		resp.status(200).send({ mensagem: 'Usuário alterado com sucesso'});
 
 	} catch (error) {
-		res.status(500).send({
+		resp.status(500).send({
 			error: 'Error',
 			message: error.message
 		});
 	}
 }
-async function deleteUser(req, res) {
-	let filter = req.params.id;
+
+async function deleteUser(req, resp) {
 	try {
-
-		if (!filter) return res.status(400).send({ 'menssagem': 'Não Foi possivel deletar este usuário (Ainda falta o digitar o ID)' });
-		let user = await userModels.deleteById(filter);
-		if (user == false) {
-			return res.status(403).send({ 'menssagem': 'ID não existente!' });
+		const data = getTokenAuthorization(req);
+		let result = await userModels.deleteById(data.id);
+		if (result == false) {
+			return resp.status(403).send({ 'menssagem': 'ID não existente!' });
 		}
-		res.status(200).send({ success: true, user });
+		resp.status(200).send(result);
 
 
 	} catch (error) {
-		res.status(500).send({
+		resp.status(500).send({
 			error: 'Error',
 			message: error.message
 		});
 	}
 }
 
-module.exports = { create, authentic, readUser, updateUser, deleteUser };
+const getTokenAuthorization = (req) => {
+	return jwt.verify(req.headers['authorization'].split(" ")[1], process.env.TOKEN_SECRET);
+}
+
+module.exports = { createUser, authentication, getUserById, updateUser, deleteUser };

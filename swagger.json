@@ -34,10 +34,12 @@
                                         "nome": "exemple nome",
                                         "email": "emailExemplo123@g.com",
                                         "senha": "senhaExemplo123",
-                                        "telefones": [{
-                                            "numero": "00000-0000",
-                                            "ddd": "00"
-                                        }]
+                                        "telefones": [
+                                            {
+                                                "numero": "00000-0000",
+                                                "ddd": "00"
+                                            }
+                                        ]
                                     }
                                 }
                             }
@@ -45,9 +47,6 @@
                     }
                 },
                 "responses": {
-                    "400": {
-                        "description": "Menssagem: Não Foi possivel criar este usuário!"
-                    },
                     "403": {
                         "description": "E-mail já Existente!"
                     },
@@ -65,7 +64,7 @@
                 }
             }
         },
-        "/SigIn":{
+        "/SigIn": {
             "post": {
                 "summary": "Entrar com Email e Senha",
                 "description": "Essa rota é responsavel por pegar email e senha e validar se o token ainda é valido para permitir as outras requisições",
@@ -90,9 +89,6 @@
                     }
                 },
                 "responses": {
-                    "400": {
-                        "description": "Menssagem: Não Foi possivel logar"
-                    },
                     "401": {
                         "description": "Usuário e/ou senha inválidos"
                     },
@@ -110,7 +106,7 @@
                 }
             }
         },
-        "/user/{id}":{
+        "/user/{id}": {
             "get": {
                 "summary": "Busca ID",
                 "description": "Pega um unico Usuario pelo seu ID, (Não se esqueça de validar o Token)",
@@ -146,7 +142,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/user": {
             "put": {
                 "summary": "Atualizar User",
                 "description": "Esta rota é responsavel por Atualizar Usuario , (Não se esqueça de validar o Token)",
@@ -175,12 +173,14 @@
                             "examples": {
                                 "User": {
                                     "value": {
-                                        "nome": "exemple nome",                            
+                                        "nome": "exemple nome",
                                         "senha": "senhaExemplo123",
-                                        "telefones": [{
-                                            "numero": "00000-0000",
-                                            "ddd": "00"
-                                        }]
+                                        "telefones": [
+                                            {
+                                                "numero": "00000-0000",
+                                                "ddd": "00"
+                                            }
+                                        ]
                                     }
                                 }
                             }
@@ -227,15 +227,13 @@
                     }
                 ],
                 "responses": {
-                    "400": {
-                        "description": "menssagem: Não Foi possivel deletar este usuário"
-                    },
+
                     "401": {
                         "description": "Não Autorizado"
                     },
                     "403": {
                         "description": "E-mail já Existente!"
-                    },                    
+                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -249,9 +247,7 @@
                     }
                 }
             }
-           
         }
-        
     },
     "components": {
         "schemas": {
@@ -267,7 +263,7 @@
                     "senha": {
                         "type": "string"
                     },
-                    "telefones":{
+                    "telefones": {
                         "type": "array"
                     }
                 }
