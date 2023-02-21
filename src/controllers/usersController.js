@@ -45,7 +45,12 @@ async function getUserById(req, resp) {
 		const data = getTokenAuthorization(req);
 		if (data.id === req.params.id) {
 			const result = await userModels.getUserById(data.id)
-			resp.status(200).send(result);	
+			if (result) {
+				resp.status(200).send(result);	
+			}else{
+				resp.status(404).send({ mensagem: "Usuário não encontrado!"})
+			}
+			
 		}
 		else {
 			resp.status(401).send({ mensagem: "Não autorizado"});

@@ -10,7 +10,9 @@
     },
     "servers": [
         {
-            "url": "http://ec2-100-26-247-171.compute-1.amazonaws.com:5000",
+            
+            "url": "http://localhost:5000",
+            "url_ec2": "http://ec2-100-26-247-171.compute-1.amazonaws.com:5000",
             "description": "API de test"
         }
     ],

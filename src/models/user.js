@@ -72,8 +72,11 @@ async function authentication(validaUser) {
 
 async function getUserById(id) {
 	let result = await repository.findByFilter(COLLETION_USUARIO,{ id: id });
-	delete result.senha;
-	delete result.token;
+	if (result) {
+		delete result.senha;
+		delete result.token;	
+	}
+	
 	return result;
 }
 
