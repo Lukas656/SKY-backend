@@ -1,6 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable no-unused-vars */
 require('dotenv').config();
 const repository = require('../repository/index');
 const bcrypt = require('bcrypt');

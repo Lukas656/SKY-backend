@@ -3,6 +3,10 @@
 
 Criar um aplicativo backend que irá expor uma API RESTful de criação de sing up/sign; Esta API ultiliza Rotas Para o CRUD, banco de dados nosql, gera token para autenticação e liberação das rotas, também criptografia de senhas com a biblioteca Bcrypt, ultilizando JavaScript, node.js, Express, Testes Unitários com Jest das funções de Requisição e Utilização de Eslint.
 
+# Observações:
+
+Acredito que não é o correto fazer o commit do .env porém como é apenas um teste para facilitar a validação eu adicionei o .env no commit.
+
 
 ## Autor
 
@@ -29,7 +33,7 @@ Após clonar o repositório rode os Seguintes comandos
 
 ## POSTMAN
 
-Segue a collection do POSTMAN para facilitar os testes, porém a mesma está configurada com o localhost é necessário alterar o PATCH
+Segue a collection do POSTMAN para facilitar os testes, porém a mesma está configurada com o localhost é necessário alterar o PATCH:
 
 https://api.postman.com/collections/6382000-e0dfbe01-23be-463b-bcff-bfa5cffe4195?access_key=PMAT-01GSTXC45C0XZP8RVBDB9313B2
 

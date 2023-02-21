@@ -31,13 +31,13 @@
                             "examples": {
                                 "User": {
                                     "value": {
-                                        "nome": "exemple nome",
-                                        "email": "emailExemplo123@g.com",
-                                        "senha": "senhaExemplo123",
+                                        "nome": "Silvio Santos",
+                                        "email": "silviosantos@gmail.com",
+                                        "senha": "12345",
                                         "telefones": [
                                             {
-                                                "numero": "00000-0000",
-                                                "ddd": "00"
+                                                "numero": "91234-1234",
+                                                "ddd": "11"
                                             }
                                         ]
                                     }
@@ -80,8 +80,8 @@
                             "examples": {
                                 "User": {
                                     "value": {
-                                        "email": "emailExemplo123@g.com",
-                                        "senha": "senhaExemplo123"
+                                        "email": "silviosantos@gmail.com",
+                                        "senha": "12345"
                                     }
                                 }
                             }
@@ -173,8 +173,8 @@
                             "examples": {
                                 "User": {
                                     "value": {
-                                        "nome": "exemple nome",
-                                        "senha": "senhaExemplo123",
+                                        "nome": "Silvio Santos",
+                                        "senha": "12345",
                                         "telefones": [
                                             {
                                                 "numero": "00000-0000",
