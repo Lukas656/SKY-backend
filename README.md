@@ -26,6 +26,13 @@ Após clonar o repositório rode os Seguintes comandos
   npm i
   npm start
 ```
+
+## POSTMAN
+
+Segue a collection do POSTMAN para facilitar os testes, porém a mesma está configurada com o localhost é necessário alterar o PATCH
+
+https://api.postman.com/collections/6382000-e0dfbe01-23be-463b-bcff-bfa5cffe4195?access_key=PMAT-01GSTXC45C0XZP8RVBDB9313B2
+
 ## Rodando os testes
 
 Para rodar os testes, rode o seguinte comando
