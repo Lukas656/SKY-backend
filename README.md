@@ -36,4 +36,4 @@ Para rodar os testes, rode o seguinte comando
   npm run test
 ```
 ## Demonstração
-![tinywow_api-SKY_14058986](https://user-images.githubusercontent.com/72577273/219472162-9b857f06-f821-4673-a839-e5b9296f6dfb.gif)
+
