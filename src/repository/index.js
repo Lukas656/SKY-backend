@@ -1,3 +1,6 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable no-dupe-keys */
+/* eslint-disable linebreak-style */
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 

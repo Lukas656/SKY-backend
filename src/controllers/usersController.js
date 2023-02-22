@@ -1,3 +1,6 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable quotes */
+/* eslint-disable linebreak-style */
 require('dotenv').config();
 const userModels = require('../models/user');
 const jwt = require('jsonwebtoken');
@@ -44,11 +47,11 @@ async function getUserById(req, resp) {
 	try {
 		const data = getTokenAuthorization(req);
 		if (data.id === req.params.id) {
-			const result = await userModels.getUserById(data.id)
+			const result = await userModels.getUserById(data.id);
 			if (result) {
 				resp.status(200).send(result);	
 			}else{
-				resp.status(404).send({ mensagem: "Usuário não encontrado!"})
+				resp.status(404).send({ mensagem: "Usuário não encontrado!"});
 			}
 			
 		}
@@ -99,6 +102,6 @@ async function deleteUser(req, resp) {
 
 const getTokenAuthorization = (req) => {
 	return jwt.verify(req.headers['authorization'].split(" ")[1], process.env.TOKEN_SECRET);
-}
+};
 
 module.exports = { createUser, authentication, getUserById, updateUser, deleteUser };

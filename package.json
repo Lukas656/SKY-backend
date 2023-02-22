@@ -1,5 +1,5 @@
 {
-  "name": "SKY-backend",
+  "name": "SKYbackend",
   "version": "1.0.0",
   "description": "um aplicativo backend que irá expor uma API RESTful de criação de sing up/sign",
   "main": "app.js",

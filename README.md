@@ -20,7 +20,8 @@ node.js, mongoDB, Bcrypt, Express, JWT, Jest
 
 
 ## Documentação
-[Documentação](https://link-da-documentação)
+Swagger que subi em um servirdor na AWS pode ser que não fique muito tempo no ar: 
+[Documentação](http://ec2-100-26-247-171.compute-1.amazonaws.com:5000/docs/)
 
 
 ## Rodando API
@@ -46,5 +47,5 @@ Para rodar os testes, rode o seguinte comando
   ou
   npm run test
 ```
-## Demonstração
+
 

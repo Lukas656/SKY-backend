@@ -1,6 +1,4 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
+/* eslint-disable linebreak-style */
 const express = require('express');
 const cors = require('cors');
 const swagger = require('../../swagger');
