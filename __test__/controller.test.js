@@ -6,7 +6,7 @@
 
 const obj = {
 	nome: 'John Doe',
-	email: 'johndoe@example.com',
+	email: 'johndoe123@example.com',
 	senha: 'myPassword123',
 	telefone: [{
 		numero: '123456789',
@@ -30,5 +30,17 @@ describe('Teste da função que recebe um objeto com nome, email, senha e telefo
 	  expect(typeof obj.telefone[0].numero).toBe('string');
 	  expect(obj.telefone[0].ddd).toBeDefined();
 	  expect(typeof obj.telefone[0].ddd).toBe('string');
+	});
+});
+describe('testa se esse email existe ou não', () => {
+	it('Deve validar a Existencia do email', () => {
+		const novoemail = 'johndoe@example.com' ;
+		const mensagem = {Menssagem: 'Email valido!!!'};
+		if(novoemail == obj.email){
+		    const mensagem = {Menssagem: 'Email Invalido!!!'};
+			expect(mensagem.Menssagem).toBe('Email Invalido!!!');
+		}else{
+			expect(mensagem.Menssagem).toBe('Email valido!!!');
+		}
 	});
 });

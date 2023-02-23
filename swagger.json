@@ -11,8 +11,12 @@
     "servers": [
         {
             
-            "url_localhost": "http://localhost:5000",
             "url": "http://ec2-100-26-247-171.compute-1.amazonaws.com:5000",
+            "description": "API de test"
+        },
+        {
+            
+            "url": "http://localhost:5000",
             "description": "API de test"
         }
     ],
@@ -158,14 +162,6 @@
                         "bearerAuth": []
                     }
                 ],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID do Usuario para busca",
-                        "required": true
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -218,14 +214,6 @@
                 "security": [
                     {
                         "bearerAuth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID do Usuario para busca",
-                        "required": true
                     }
                 ],
                 "responses": {

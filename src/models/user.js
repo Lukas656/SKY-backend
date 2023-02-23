@@ -75,6 +75,7 @@ async function getUserById(id) {
 	let result = await repository.findByFilter(COLLETION_USUARIO, { id: id });
 	if (result) {
 		delete result.senha;
+		delete result._id;
 		delete result.token;
 	}
 
