@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 const express = require('express');
 const routers = require('./src/routes');
-const port = 3000;
+const port = 5000;
 
 const app = express();
 app.use(routers);
